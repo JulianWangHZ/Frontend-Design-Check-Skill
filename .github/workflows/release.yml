@@ -31,14 +31,14 @@ jobs:
           skip-github-release: true
 
       - name: Merge release PR
-        if: steps.release_pr.outputs.pr
+        if: steps.release_pr.outputs.prs_created == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ fromJSON(steps.release_pr.outputs.pr).number }}
-        run: gh pr merge "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --squash --delete-branch
+          PR_JSON: ${{ steps.release_pr.outputs.pr }}
+        run: gh pr merge "$(jq -r .number <<< "$PR_JSON")" --repo "$GITHUB_REPOSITORY" --squash --delete-branch
 
       - name: Create tag and GitHub Release
-        if: steps.release_pr.outputs.pr
+        if: steps.release_pr.outputs.prs_created == 'true'
         uses: googleapis/release-please-action@v4
         with:
           config-file: release-please-config.json
