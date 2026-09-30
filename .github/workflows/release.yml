@@ -3,7 +3,7 @@ name: Release
 # 依 Conventional Commits 自動發版，不需要手動 merge：
 # feat → 次版號（1.0.0 → 1.1.0），fix → 修訂號（1.0.0 → 1.0.1），feat! 或 BREAKING CHANGE → 主版號。
 # 1. release-please 開（或更新）發版 PR，更新 package.json、plugin.json 的版本與 CHANGELOG.md。
-# 2. 立刻 squash merge 該 PR。
+# 2. 在發版 PR 上跑 scripts/validate.sh，通過後回報 validate 狀態，再 squash merge。
 # 3. 再跑一次 release-please 建立 tag 與 GitHub Release。
 #    GITHUB_TOKEN 推上 main 的 commit 不會再觸發 workflow，所以要在同一個 job 內補跑。
 
@@ -14,6 +14,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  statuses: write
 
 concurrency:
   group: release
@@ -30,12 +31,25 @@ jobs:
           manifest-file: .release-please-manifest.json
           skip-github-release: true
 
-      - name: Merge release PR
+      - uses: actions/checkout@v4
+        if: steps.release_pr.outputs.prs_created == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.release_pr.outputs.prs_created == 'true'
+        with:
+          node-version: 22
+
+      - name: Validate and merge release PR
         if: steps.release_pr.outputs.prs_created == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           PR_JSON: ${{ steps.release_pr.outputs.pr }}
-        run: gh pr merge "$(jq -r .number <<< "$PR_JSON")" --repo "$GITHUB_REPOSITORY" --squash --delete-branch
+        run: |
+          git fetch origin "$(jq -r .headBranchName <<< "$PR_JSON")"
+          git checkout --detach FETCH_HEAD
+          bash scripts/validate.sh
+          gh api "repos/$GITHUB_REPOSITORY/statuses/$(git rev-parse HEAD)" -f state=success -f context=validate
+          gh pr merge "$(jq -r .number <<< "$PR_JSON")" --repo "$GITHUB_REPOSITORY" --squash --delete-branch
 
       - name: Create tag and GitHub Release
         if: steps.release_pr.outputs.prs_created == 'true'
