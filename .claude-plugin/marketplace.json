@@ -1,0 +1,14 @@
+{
+  "name": "frontend-design-check",
+  "owner": {
+    "name": "Frontend-Design-Check-Skill"
+  },
+  "description": "Frontend Design Check：Figma 設計稿實作與視覺驗收（繁體中文）",
+  "plugins": [
+    {
+      "name": "frontend-design-check",
+      "source": "./",
+      "description": "鎖定 Figma node → 讀專案慣例 → 刻 layout → 瀏覽器 / 模擬器實測截圖比對 → 交付對照圖與檢查紀錄"
+    }
+  ]
+}

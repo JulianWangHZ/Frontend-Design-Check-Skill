@@ -1,0 +1,46 @@
+name: Release
+
+# 依 Conventional Commits 自動發版，不需要手動 merge：
+# feat → 次版號（1.0.0 → 1.1.0），fix → 修訂號（1.0.0 → 1.0.1），feat! 或 BREAKING CHANGE → 主版號。
+# 1. release-please 開（或更新）發版 PR，更新 package.json、plugin.json 的版本與 CHANGELOG.md。
+# 2. 立刻 squash merge 該 PR。
+# 3. 再跑一次 release-please 建立 tag 與 GitHub Release。
+#    GITHUB_TOKEN 推上 main 的 commit 不會再觸發 workflow，所以要在同一個 job 內補跑。
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - id: release_pr
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+          skip-github-release: true
+
+      - name: Merge release PR
+        if: steps.release_pr.outputs.pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ fromJSON(steps.release_pr.outputs.pr).number }}
+        run: gh pr merge "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --squash --delete-branch
+
+      - name: Create tag and GitHub Release
+        if: steps.release_pr.outputs.pr
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+          skip-github-pull-request: true

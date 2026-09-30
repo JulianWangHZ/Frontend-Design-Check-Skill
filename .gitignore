@@ -1,0 +1,13 @@
+# Tool output
+.playwright-mcp/
+*.log
+*.tmp
+
+# Local settings
+.claude/settings.local.json
+
+# Editors and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store

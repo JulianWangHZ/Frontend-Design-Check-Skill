@@ -1,0 +1,7 @@
+{
+  "name": "frontend-design-check",
+  "version": "1.0.0",
+  "private": true,
+  "description": "frontend-design-check plugin 的版本號來源（release-please 用）",
+  "license": "MIT"
+}
