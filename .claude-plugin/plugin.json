@@ -1,6 +1,6 @@
 {
   "name": "frontend-design-check",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Figma 設計稿轉 web 頁面或 iOS / Android app 畫面，並用實際執行畫面截圖逐項驗收的 Claude Code Skill",
   "author": {
     "name": "Frontend-Design-Check-Skill"
