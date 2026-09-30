@@ -7,6 +7,8 @@ on:
 
 jobs:
   validate:
+    # 發版 PR 由 release.yml 開完立刻 merge，分支刪掉後這裡的 run 無法啟動，直接跳過
+    if: ${{ !startsWith(github.head_ref, 'release-please--') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
