@@ -33,7 +33,7 @@ This skill turns comparison into an evidence-based process: two original images 
 ## How it works
 
 1. **Lock the comparison target**: find the Figma node that contains the full page (including overflowing sibling layers) and produce a reference image with exactly the same pixel size as the running viewport.
-2. **Read the project first**: repo instructions, app shell, design tokens, existing components and icon libraries. Reuse whatever fits.
+2. **Read the project first**: repo instructions, app shell, design tokens, existing components and icon libraries. Reuse whatever fits. What Figma draws follows Figma; states and tokens it doesn't draw follow the codebase. If neither covers something, ask once instead of guessing.
 3. **Build the layout**: outer geometry first (viewport, fixed / flow regions, overflow, z-index), then content, controls, states, and interactions.
 4. **Verify the running UI**:
    - Web: build, open the browser, and screenshot only after confirming the final URL and `document.fonts.ready`. Settle disputes with same-coordinate crops plus `getBoundingClientRect()`.

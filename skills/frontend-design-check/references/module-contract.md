@@ -15,6 +15,9 @@
 - Node：正確的 node ID
 - 參考尺寸：寬 × 高
 
+## 專案依據
+列出沿用的現有 component 與 design token（附檔案路徑），以及 Figma 沒畫的狀態各依據哪個檔；找不到依據的細節標「codebase 查無」。
+
 ## 公開介面
 列出 props、emit 的 event、slots 和重要的預設值。
 

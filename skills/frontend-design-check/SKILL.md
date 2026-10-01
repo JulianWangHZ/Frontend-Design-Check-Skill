@@ -24,6 +24,18 @@ description: 把 Figma 設計稿做成 web 頁面或 iOS / Android app 畫面，
 
 讀 repo 的指示文件（`CLAUDE.md`、`AGENTS.md` 等）、app shell、layout 樣式、現有 component、design token 和已安裝的 UI 套件。符合設計要求時，沿用專案現有的 component 與慣例。
 
+Figma 只畫設計稿涵蓋的範圍，其餘細節一律以 codebase 為依據，**不憑印象或預設值猜**：
+
+| 決定什麼 | 依據 |
+|---|---|
+| 設計稿畫到的版型、文案、尺寸、新狀態 | Figma |
+| 設計稿沒畫的狀態（disabled、empty、error、loading）、未改動區塊、字級／間距／色票等 token | 專案現有 component 與 design token（`tailwind.config.*`、theme、共用 component） |
+
+1. 必讀兩類：design token（色票、圓角、字級、間距、字重），以及頁面會用到的共用 component（toolbar、表單欄位、選擇器、按鈕、開關、dialog）的樣式、尺寸、icon 與狀態。
+2. 只取「長什麼樣」的數值與既有 component；不為了對齊單張截圖去複製或改寫共用 component 的實作。
+3. Figma 沒畫、codebase 也找不到依據的狀態 → 實作前**問使用者一次**（缺的狀態一起列），不自行發明。問法：`⏸ 實作前確認：Figma 沒畫 {狀態清單}，專案也沒有對應 component，要補設計稿，還是照 {建議做法} 做？`
+4. 每個區塊用了哪些現有 component／token、哪些細節「codebase 查無」，記進檢查紀錄（模組化交付時寫進模組說明的「專案依據」）。
+
 使用者要求模組化交付時，把頁面切成職責獨立的區塊，並依 [模組說明約定](references/module-contract.md) 為每個區塊寫說明文件。使用 subagent 時，先定好模組約定和互不重疊的檔案歸屬，再指定一個 integrator 負責共用 layout 及整頁驗證。
 
 ## 實作 layout
@@ -46,6 +58,6 @@ App 則是跑專案的檢查和 debug / release build，在模擬器或實機開
 
 ## 交付內容
 
-保留最終 Figma 參考圖、新截的頁面截圖、有標籤的並排對照圖、使用者要求的模組說明，以及簡短的檢查紀錄。在檔案旁記錄 Figma node、最終 URL、viewport、DPR 和截圖時間（app 改記 bundle ID / package name、畫面、device、OS 版本、邏輯尺寸和 scale）。並排展示前確認兩張截圖的像素尺寸相同。
+保留最終 Figma 參考圖、新截的頁面截圖、有標籤的並排對照圖、使用者要求的模組說明，以及簡短的檢查紀錄。在檔案旁記錄 Figma node、最終 URL、viewport、DPR 和截圖時間（app 改記 bundle ID / package name、畫面、device、OS 版本、邏輯尺寸和 scale），以及設計稿沒畫的部分各依據哪個 codebase 檔。並排展示前確認兩張截圖的像素尺寸相同。
 
 說明 code 改動、URL 與 viewport（app 為 device 與 scale）、build 結果、已確認的剩餘限制（例如缺少需要的 font），並提供最終產出檔案的可點擊路徑。

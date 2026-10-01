@@ -31,7 +31,7 @@ iOS 檢查需要 macOS（iOS 模擬器只能在 Mac 上跑）；Windows 和 Linu
 ## 運作方式
 
 1. **確定對照目標** — 找到包含完整頁面的 Figma node（含 overflow 的 sibling layer），產出跟頁面 viewport 像素尺寸完全一致的參考圖。
-2. **實作前先看專案** — 讀 repo 指示文件、app shell、design token、現有 component 與 icon 套件，能沿用就沿用。
+2. **實作前先看專案** — 讀 repo 指示文件、app shell、design token、現有 component 與 icon 套件，能沿用就沿用。設計稿畫到的照 Figma；沒畫的狀態與 token 照 codebase，兩邊都沒有就先問一次，不自行猜。
 3. **實作 layout** — 先做外層幾何（viewport、fixed / flow 區塊、overflow、z-index），再做內容、控制項、state 與互動。
 4. **驗證實際畫面** — Web：build、開瀏覽器、確認最終 URL 與 `document.fonts.ready` 後才截圖，有爭議就裁切原圖 + `getBoundingClientRect()` 核實。App：固定 status bar、字級、深淺色和動畫，在模擬器截圖，用 element tree 量測核實。
 5. **交付** — Figma 參考圖、新截圖、並排對照圖、檢查紀錄（node、URL 或 device、viewport 或 scale、截圖時間）。
