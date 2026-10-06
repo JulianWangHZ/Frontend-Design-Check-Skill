@@ -36,7 +36,9 @@ UI icon 用真正的 icon component 或素材。新增素材前先檢查已安�
 
 ## 驗證實際頁面
 
-跑專案相關的檢查和 production build。在瀏覽器開啟實際跑起來的 app 並設定目標 viewport。每次正式截圖前，確認最終 URL 和目標 route 正確；排除登入、錯誤、loading 和非預期 redirect 狀態；等待穩定的頁面標記、需要的 async 內容及 `document.fonts.ready`。這些都通過後才截圖。能拿到 DOM 資訊時，檢查關鍵 layout 區塊的 rect 座標和 computed style。
+Web 的開頁、截圖和 DOM 量測只用 Playwright MCP（`browser_navigate`、`browser_resize`、`browser_take_screenshot`、`browser_evaluate`），不要改用 Claude in Chrome 或其他瀏覽器工具。沒接上 Playwright MCP 時，停下來請使用者安裝後再繼續。
+
+跑專案相關的檢查和 production build。用 Playwright MCP 開啟實際跑起來的 app 並設定目標 viewport。每次正式截圖前，確認最終 URL 和目標 route 正確；排除登入、錯誤、loading 和非預期 redirect 狀態；等待穩定的頁面標記、需要的 async 內容及 `document.fonts.ready`。這些都通過後才截圖。能拿到 DOM 資訊時，檢查關鍵 layout 區塊的 rect 座標和 computed style。
 
 App 則是跑專案的檢查和 debug / release build，在模擬器或實機開到目標畫面。截圖前先固定 status bar、字級、深淺色和動畫，確認停在目標畫面、async 內容和自訂 font 都載入完，再截圖。每次都要把 Figma 數值跟模擬器上真實的 element tree 逐項比對，不能改用 react-native-web 在瀏覽器量測。細節見 [App 視覺檢查約定](references/native-review.md)。
 
