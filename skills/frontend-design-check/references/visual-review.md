@@ -41,7 +41,7 @@ return ['header', 'main', '[data-testid="primary-content"]']
   .map((selector) => ({ selector, ...rect(selector) }))
 ```
 
-這段是 function body。用 Playwright MCP 的 `browser_evaluate` 時，包成 `() => { … }` 傳入；在其他只執行 script 的工具中，包成 `(() => { … })()`。
+這段是 function body。用 Playwright MCP 的 `browser_evaluate` 時，包成 `() => { … }` 傳入。
 
 多個 reviewer 看同一張縮小過的拼接圖得出相同結論，仍不能證明偏移真的存在。改之前要用原始解析度的裁切圖或實際頁面的 layout 量測核實。
 

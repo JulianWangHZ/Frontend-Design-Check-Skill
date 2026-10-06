@@ -40,7 +40,7 @@ iOS 檢查需要 macOS（iOS 模擬器只能在 Mac 上跑）；Windows 和 Linu
 
 - 一個能開的 Figma 設計連結，最好直接指到完整頁面的 node；設計需要權限時，確認 Claude Code 已接上 Figma MCP 並能讀取。
 - 一個能跑起來的前端專案，以及要實作或檢查的頁面 route（app 為畫面名稱或 deep link）。
-- Web：能操作瀏覽器的工具（例如 Playwright MCP 或 Claude in Chrome），用來開頁面並截圖。
+- Web：[Playwright MCP](https://github.com/microsoft/playwright-mcp)（必要），用來開頁面、截圖和量測 DOM。不使用 Claude in Chrome 等其他瀏覽器工具。
 - App：已開機的 iOS 模擬器（Xcode，僅限 macOS）或 Android 模擬器 / 實機（`adb`）。截圖用內建指令即可。數值量測：Android 用內建的 `uiautomator dump`；iOS 需要 [`idb`](https://fbidb.io)（`brew install facebook/fb/idb-companion` + `pip install fb-idb`）或 Appium 其中一種，React Native 專案也可以改用 `measureInWindow`，不另外安裝。
 - 明確的目標 viewport 尺寸或 device 型號；有 responsive、互動或拆模組需求，也寫在任務裡。
 
@@ -88,6 +88,16 @@ Copy-Item -Recurse Frontend-Design-Check-Skill\skills\frontend-design-check "<�
 ```
 
 保持 `SKILL.md` 與 `references/` 的相對位置。裝好後重開 Claude Code，在 `/` 選單中應該看得到 `frontend-design-check`。
+
+### Playwright MCP（Web 必要）
+
+Web 的截圖和 DOM 量測只透過 [Playwright MCP](https://github.com/microsoft/playwright-mcp)。只做 app 可略過。
+
+```bash
+claude mcp add playwright -s user -- npx @playwright/mcp@latest
+```
+
+執行 `claude mcp list`，確認 `playwright` 顯示為已連線。Playwright MCP 預設使用已安裝的 Google Chrome；沒有 Chrome 時，在上面指令後加 `--browser chromium`，並執行 `npx playwright install chromium`。
 
 ## 快速開始
 

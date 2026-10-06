@@ -44,7 +44,7 @@ This skill turns comparison into an evidence-based process: two original images 
 
 - A Figma link you can open, ideally pointing at the node that holds the full page. If the file needs access, make sure Claude Code is connected to the Figma MCP and can read it.
 - A frontend project that runs, plus the route to build or check (for apps, the screen name or deep link).
-- Web: a browser automation tool (e.g. Playwright MCP or Claude in Chrome) to open the page and take screenshots.
+- Web: [Playwright MCP](https://github.com/microsoft/playwright-mcp) (required) to open the page, take screenshots, and measure the DOM. Other browser tools such as Claude in Chrome are not used.
 - App: a booted iOS Simulator (Xcode, macOS only) or Android emulator / device (`adb`). Screenshots use built-in commands. For numeric measurement, Android uses the built-in `uiautomator dump`; iOS needs either [`idb`](https://fbidb.io) (`brew install facebook/fb/idb-companion` + `pip install fb-idb`) or Appium. React Native projects can use `measureInWindow` instead, with nothing to install.
 - A clear target viewport or device model. Put any responsive, interaction, or module-split requirements in the task.
 
@@ -92,6 +92,16 @@ Copy-Item -Recurse Frontend-Design-Check-Skill\skills\frontend-design-check "<pr
 ```
 
 Keep `SKILL.md` and `references/` in the same relative layout. Restart Claude Code and `frontend-design-check` should appear in the `/` menu.
+
+### Playwright MCP (required for web)
+
+Web screenshots and DOM measurement run only through [Playwright MCP](https://github.com/microsoft/playwright-mcp). Skip this for app-only work.
+
+```bash
+claude mcp add playwright -s user -- npx @playwright/mcp@latest
+```
+
+Run `claude mcp list` and confirm `playwright` shows as connected. Playwright MCP uses the installed Google Chrome by default. Without Chrome, add `--browser chromium` to the command above and run `npx playwright install chromium`.
 
 ## Quick start
 
